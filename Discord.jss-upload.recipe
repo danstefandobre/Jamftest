@@ -8,7 +8,6 @@
     <string>com.hcs.jss-upload.Discord</string>
     <key>Input</key>
     <dict>
-        <key>pkg_path</key><string></string>
         <key>CATEGORY</key>
         <string>Applications</string>
         <key>NAME</key>
@@ -27,8 +26,7 @@
                 <string>%CATEGORY%</string>
                 <key>prod_name</key>
                 <string>%NAME%</string>
-                <key>pkg_path</key>
-                <string>%pkg_path%</string>
+                <key>pkg_path</key><string></string>
             </dict>
             <key>Processor</key>
             <string>JSSImporter</string>
