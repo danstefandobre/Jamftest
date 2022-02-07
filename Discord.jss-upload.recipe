@@ -8,6 +8,7 @@
     <string>com.hcs.jss-upload.Discord</string>
     <key>Input</key>
     <dict>
+        <key>pkg_path</key><string></string>
         <key>CATEGORY</key>
         <string>Applications</string>
         <key>NAME</key>
