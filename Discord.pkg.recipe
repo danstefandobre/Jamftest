@@ -10,6 +10,12 @@
 	<dict>
 		<key>NAME</key>
 		<string>Discord</string>
+		<key>CATEGORY</key>
+        	<string>Applications</string>
+		<key>CATEGORY</key>
+        	<string>Applications</string>
+		<key>pkg_path</key>
+        	<string>/Users/repository/Library/AutoPkg/Cache/local.pkg.Discord/</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.4</string>
@@ -80,6 +86,19 @@
 			<key>Processor</key>
 			<string>PkgCreator</string>
 		</dict>
+		<dict>
+            		<key>Arguments</key>
+            		<dict>
+                		<key>category</key>
+               			<string>%CATEGORY%</string>
+                		<key>prod_name</key>
+                		<string>%NAME%</string>
+                		<key>pkg_path</key>
+                		<string>%pkg_path%%NAME%-%version%</string>
+            		</dict>
+            		<key>Processor</key>
+            		<string>JSSImporter</string>
+        	</dict>
 	</array>
 </dict>
 </plist>
