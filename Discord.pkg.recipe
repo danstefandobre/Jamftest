@@ -94,7 +94,7 @@
                 		<key>prod_name</key>
                 		<string>%NAME%</string>
                 		<key>pkg_path</key>
-                		<string>%pkg_path%%NAME%-%version%</string>
+                		<string>%pkg_path%</string>
             		</dict>
             		<key>Processor</key>
             		<string>JSSImporter</string>
