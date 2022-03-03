@@ -126,7 +126,7 @@
 		<dict>
             		<key>Arguments</key>
             		<dict>
-                		<key>category</key>
+                		<key>pkg_category</key>
                			<string>%CATEGORY%</string>
                 		<key>prod_name</key>
                 		<string>%NAME%</string>
