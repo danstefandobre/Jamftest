@@ -7,11 +7,13 @@
     <key>Identifier</key>
     <string>com.github.dan-stefan.download.pycharm</string>
     <key>CATEGORY</key>
-    <string>Applications</string>
+    <string>Testing</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>PyCharm CE</string>
+	<key>CATEGORY</key>
+    	<string>Testing</string>
         <key>SEARCH_URL</key>
         <string>https://data.services.jetbrains.com/products/releases?code=PCC</string>
         <key>SEARCH_PATTERN</key>
@@ -125,7 +127,7 @@
             		<key>Arguments</key>
             		<dict>
                 		<key>category</key>
-               			<string>Testing</string>
+               			<string>%CATEGORY%</string>
                 		<key>prod_name</key>
                 		<string>%NAME%</string>
                 		<key>pkg_path</key>
