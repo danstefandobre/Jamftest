@@ -125,7 +125,7 @@
             		<key>Arguments</key>
             		<dict>
                 		<key>category</key>
-               			<string>%CATEGORY%</string>
+               			<string>Testing</string>
                 		<key>prod_name</key>
                 		<string>%NAME%</string>
                 		<key>pkg_path</key>
