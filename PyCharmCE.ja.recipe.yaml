@@ -56,7 +56,7 @@ Process:
       pkg_request: 
         chown:
           - group: admin
-          - path: Applications
+          - path: "%pkgroot%/Applications/"
           - user: root
         id: "%bundleid%"
         options: purge_ds_store
