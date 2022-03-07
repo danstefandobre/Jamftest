@@ -46,7 +46,7 @@ Process:
   - Processor: Unarchiver
     Arguments:
       archive_path: "%pathname%"
-      destination_path: %pkgroot%/Applications
+      destination_path: "%pkgroot%/Applications"
       purge_destination: true 
  
   - Processor: Versioner
