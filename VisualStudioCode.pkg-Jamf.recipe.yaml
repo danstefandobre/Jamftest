@@ -30,30 +30,30 @@ Process:
   - Processor: Unarchiver
     Arguments:
       archive_path: "%RECIPE_CACHE_DIR%/downloads/%NAME%.zip"
-      purge_destination: true
-
+      purge_destination: true 
   
   - Processor: CodeSignatureVerifier
     Arguments:
       input_path: "%RECIPE_CACHE_DIR%/%NAME%/Visual Studio Code.app"
       requirement: identifier "com.microsoft.VSCode" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UBF8T346G9
   
-  - Processor: Versioner
-    Arguments:
-      input_plist_path: "%pkgroot%/Applications/Visual Studio Code.app/Contents/Info.plist"
-      plist_version_key: CFBundleShortVersionString
-
   - Processor: PkgRootCreator
     Arguments:
       pkgdirs: 
         Applications: '0775'
       pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
-  
-  - Processor: Copier
-    Arguments:
-      destination_path: "%pkgroot%/Applications/%app_name%"
-      source_path: "%pathname%/%app_name%"
       
+  - Processor: Unarchiver
+    Arguments:
+      archive_path: "%pathname%"
+      destination_path: %pkgroot%/Applications
+      purge_destination: true 
+ 
+  - Processor: Versioner
+    Arguments:
+      input_plist_path: "%pkgroot%/Applications/Visual Studio Code.app/Contents/Info.plist"
+      plist_version_key: CFBundleShortVersionString
+  
   - Processor: PkgCreator
     Arguments:
       pkg_request: 
@@ -64,7 +64,7 @@ Process:
         id: "%bundleid%"
         options: purge_ds_store
         pkgname: "%NAME%-%version%"
-        version: "%version%"
+        pkgdir: "%RECIPE_CACHE_DIR%"
         
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
     Arguments:
