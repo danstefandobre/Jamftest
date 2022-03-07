@@ -26,12 +26,7 @@ Process:
       filename: "%NAME%.dmg" 
    
   - Processor: EndOfCheckPhase
-  
-  - Processor: CodeSignatureVerifier
-    Arguments:
-      input_path: "%pathname%/Cisco Webex Meetings.pkg"
-      requirement: identifier "com.cisco.webex.Cisco Webex Meetings"
-      
+     
   - Processor: FlatPkgUnpacker
     Arguments:
       destination_path: "%RECIPE_CACHE_DIR%/unpack"
