@@ -40,7 +40,7 @@ Process:
   
   - Processor: Versioner
     Arguments:
-      input_plist_path: "%RECIPE_CACHE_DIR%/receipts"
+      input_plist_path: "%RECIPE_CACHE_DIR%/%NAME%/Visual Studio Code.app"
 
   - Processor: PkgRootCreator
     Arguments:
