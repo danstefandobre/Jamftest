@@ -42,12 +42,7 @@ Process:
       pkgdirs: 
         Applications: '0775'
       pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
-  
-  - Processor: Copier
-    Arguments:
-      destination_path: "%pkgroot%/Applications/%app_name%"
-      source_path: "%pathname%/%app_name%"
-      
+
   - Processor: PkgCreator
     Arguments:
       pkg_request: 
@@ -58,6 +53,7 @@ Process:
         id: "%bundleid%"
         options: purge_ds_store
         pkgname: "%NAME%-%version%"
+        pkgdir: "%RECIPE_CACHE_DIR%"
         version: "%version%"
         
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
