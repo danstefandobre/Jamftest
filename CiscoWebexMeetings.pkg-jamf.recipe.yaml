@@ -35,7 +35,7 @@ Process:
   - Processor: FlatPkgUnpacker
     Arguments:
       destination_path: "%RECIPE_CACHE_DIR%/unpack"
-      flat_pkg_path: %pathname%/Cisco Webex Meetings.pkg
+      flat_pkg_path: "%pathname%/Cisco Webex Meetings.pkg"
       purge_destination: true     
   
   - Processor: PkgPayloadUnpacker
