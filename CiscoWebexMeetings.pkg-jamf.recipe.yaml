@@ -29,12 +29,25 @@ Process:
   
   - Processor: CodeSignatureVerifier
     Arguments:
-      input_path: "%pathname%/Cisco Webex Meetings.app"
+      input_path: "%pathname%/Cisco Webex Meetings.pkg"
       requirement: identifier "com.cisco.webex.Cisco Webex Meetings"
-  
-  - Processor: AppDmgVersioner
+      
+  - Processor: FlatPkgUnpacker
     Arguments:
-      dmg_path: "%pathname%"
+      destination_path: "%RECIPE_CACHE_DIR%/unpack"
+      flat_pkg_path: %pathname%/Cisco Webex Meetings.pkg
+      purge_destination: true     
+  
+  - Processor: PkgPayloadUnpacker
+    Arguments:
+      destination_path: "%RECIPE_CACHE_DIR%/payload"
+      pkg_payload_path: "%RECIPE_CACHE_DIR%/unpack/Cisco Webex Meetings.pkg/Payload"
+      purge_destination: true     
+  
+  - Processor: Versioner
+    Arguments:
+      input_plist_path: "%RECIPE_CACHE_DIR%/payload/Cisco Webex Meetings.app/Contents/Info.plist"
+      plist_version_key: CFBundleShortVersionString
 
   - Processor: PkgRootCreator
     Arguments:
