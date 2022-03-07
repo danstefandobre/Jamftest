@@ -14,7 +14,7 @@ Input:
   POLICY_TEMPLATE: JamfPolicyTemplate.xml
   POLICY_NAME: "Install Latest %NAME%"
   SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
-  SELF_SERVICE_DESCRIPTION: Viasula Code Studio update
+  SELF_SERVICE_DESCRIPTION: Visual Code Studio update
   SELF_SERVICE_ICON: "%NAME%.png"
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
