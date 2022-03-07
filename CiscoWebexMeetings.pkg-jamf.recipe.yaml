@@ -5,7 +5,7 @@ MinimumVersion: "2.3"
 Input:
   NAME: Cisco Webex Meetings
   CATEGORY: Testing
-  DOWNLOAD_URL: https://akamaicdn.webex.com/client/webexapp.dmg
+  DOWNLOAD_URL: https://binaries.webex.com/WebexTeamsDesktop-MACOS-Gold/Webex.dmg
   USER_AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/601.2.7 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.7
   GROUP_NAME: "%NAME%-update-smart"
   GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
@@ -26,22 +26,15 @@ Process:
       filename: "%NAME%.dmg" 
    
   - Processor: EndOfCheckPhase
+  
+  - Processor: CodeSignatureVerifier
+    Arguments:
+      input_path: "%pathname%/Webex.app"
+      requirement: identifier identifier "Cisco-Systems.Spark" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DE8Y96K9QP</string>
      
-  - Processor: FlatPkgUnpacker
-    Arguments:
-      destination_path: "%RECIPE_CACHE_DIR%/unpack"
-      flat_pkg_path: "%pathname%/Cisco Webex Meetings.pkg"
-      purge_destination: true     
-  
-  - Processor: PkgPayloadUnpacker
-    Arguments:
-      destination_path: "%RECIPE_CACHE_DIR%/payload"
-      pkg_payload_path: "%RECIPE_CACHE_DIR%/unpack/Cisco Webex Meetings.pkg/Payload"
-      purge_destination: true     
-  
   - Processor: Versioner
     Arguments:
-      input_plist_path: "%RECIPE_CACHE_DIR%/payload/Cisco Webex Meetings.app/Contents/Info.plist"
+      input_plist_path: "%pathname%/Webex.app/Contents/Info.plist"
       plist_version_key: CFBundleShortVersionString
 
   - Processor: PkgRootCreator
