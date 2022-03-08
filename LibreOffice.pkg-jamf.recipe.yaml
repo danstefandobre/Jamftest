@@ -16,7 +16,7 @@ Input:
   POLICY_TEMPLATE: JamfPolicyTemplate.xml
   POLICY_NAME: "Install Latest %NAME%"
   SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
-  SELF_SERVICE_DESCRIPTION: Discord is a free voice, video, and text chat app that's used by tens of millions of people
+  SELF_SERVICE_DESCRIPTION: LibreOffice
   SELF_SERVICE_ICON: "%NAME%.png"
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
