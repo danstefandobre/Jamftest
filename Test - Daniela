@@ -1,0 +1,85 @@
+Description: Downloads the latest version and makes a pkg. Then, uploads the package to the Jamf Pro Server and creates a Self Service Policy and Smart Group.
+Identifier: com.github.dan-stefan.recipes.jamf.PyCharmCE
+MinimumVersion: "2.3"
+
+Input:
+  NAME: PyCharm CE
+  CATEGORY: Testing
+  SEARCH_URL: https://data.services.jetbrains.com/products/releases?code=PCC
+  SEARCH_PATTERN: mac":{"link":"([^,]*?20\d{2,2}(.\d{1,4}){1,3}.dmg)"
+  GROUP_NAME: "%NAME%-update-smart"
+  GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
+  TESTING_GROUP_NAME: Testing
+  POLICY_CATEGORY: Testing
+  POLICY_TEMPLATE: JamfPolicyTemplate.xml
+  POLICY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DESCRIPTION: PyCharm CE the community edition of an Integrated Development Environment (IDE) used for programming in Python. It provides code analysis, a graphical debugger, an integrated unit tester, integration with version control systems (VCS), and supports web development with Django.
+  SELF_SERVICE_ICON: "%NAME%.png"
+  UPDATE_PREDICATE: "pkg_uploaded == False"
+
+Process:
+  - Processor: URLTextSearcher
+    Arguments:
+      url: "%SEARCH_URL%"
+      re_pattern: "%SEARCH_PATTERN%"
+
+  - Processor: URLDownloader
+    Arguments:
+      url: "%match%"
+      filename: "%NAME%.dmg"
+   
+  - Processor: EndOfCheckPhase
+  
+  - Processor: CodeSignatureVerifier
+    Arguments:
+      input_path: "%pathname%/PyCharm CE.app"
+      requirement: identifier "com.jetbrains.pycharm" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "2ZEFAR8TH3"
+  
+  - Processor: AppDmgVersioner
+    Arguments:
+      dmg_path: "%pathname%"
+
+  - Processor: PkgRootCreator
+    Arguments:
+      pkgdirs: 
+        Applications: '0775'
+      pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
+  
+  - Processor: Copier
+    Arguments:
+      destination_path: "%pkgroot%/Applications/%app_name%"
+      source_path: "%pathname%/%app_name%"
+      
+  - Processor: PkgCreator
+    Arguments:
+      pkg_request: 
+        chown:
+          - group: admin
+            path: Applications
+            user: root
+        id: "%bundleid%"
+        options: purge_ds_store
+        pkgname: "%NAME%-%version%"
+        version: "%version%"
+        
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
+    Arguments:
+      pkg_category: "%CATEGORY%"
+      prod_name: "%NAME%"
+      pkg_path: "%pkg_path%"
+
+  - Processor: StopProcessingIf
+    Arguments:
+      predicate: "%UPDATE_PREDICATE%"
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfComputerGroupUploader
+    Arguments:
+      computergroup_template: "%GROUP_TEMPLATE%"
+      computergroup_name: "%GROUP_NAME%"
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPolicyUploader
+    Arguments:
+      policy_template: "%POLICY_TEMPLATE%"
+      policy_name: "%POLICY_NAME%"
+      icon: "%SELF_SERVICE_ICON%"
