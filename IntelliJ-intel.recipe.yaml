@@ -5,7 +5,7 @@ MinimumVersion: "2.3"
 Input:
   NAME: IntelliJ
   CATEGORY: Testing
-  DOWNLOAD_URL: https://www.jetbrains.com/idea/download/download-thanks.html?platform=mac
+  DOWNLOAD_URL: https://www.jetbrains.com/idea/download/download-thanks.html?platform=macM1
   GROUP_NAME: "%NAME%-update-smart"
   GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
   TESTING_GROUP_NAME: Testing
