@@ -27,7 +27,7 @@ Process:
       url: "%DOWNLOAD_URL%"
       filename: "%NAME%.dmg"
    
-  - Processor: EndOfCheckPhase
+  #- Processor: EndOfCheckPhase
   
   - Processor: AppDmgVersioner
     Arguments:
