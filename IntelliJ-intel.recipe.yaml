@@ -15,6 +15,10 @@ Input:
   SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
   SELF_SERVICE_DESCRIPTION: IntelliJ IDEA is an intelligent, context-aware IDE for working with Java and other JVM languages like Kotlin, Scala, and Groovy on all sorts of applications. 
   SELF_SERVICE_ICON: "%NAME%.png"
+  #trial
+  INSTAL_BUTTON_TEXT: "Install %version%" 
+  REINSTALL_BUTTON_TEXT: "Install %version%"
+  #until here
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
 Process:
