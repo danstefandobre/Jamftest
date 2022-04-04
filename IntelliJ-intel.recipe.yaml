@@ -29,21 +29,25 @@ Process:
    
   #- Processor: EndOfCheckPhase
   
+  # below procesor Extracts bundle ID and version of app inside dmg.
   - Processor: AppDmgVersioner
     Arguments:
       dmg_path: "%pathname%"
-
+      
+  # below processor  Creates a package root and a directory structure. (Can also be used to create directory structures for other purposes.)
   - Processor: PkgRootCreator
     Arguments:
       pkgdirs: 
         Applications: '0775'
       pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
   
+  #below procesor Copies source_path to destination_path.
   - Processor: Copier
     Arguments:
       destination_path: "%pkgroot%/Applications/%app_name%"
       source_path: "%pathname%/%app_name%"
       
+  # below processor Calls autopkgserver to create a package.    
   - Processor: PkgCreator
     Arguments:
       pkg_request: 
@@ -56,15 +60,18 @@ Process:
         pkgname: "%NAME%-%version%"
         version: "%version%"
         
+        
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
     Arguments:
       pkg_category: "%CATEGORY%"
       prod_name: "%NAME%"
       pkg_path: "%pkg_path%"
 
+   # below processor Sets a variable to tell AutoPackager to stop processing a recipe if a predicate comparison evaluates to true.
   - Processor: StopProcessingIf
     Arguments:
       predicate: "%UPDATE_PREDICATE%"
+
 
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfComputerGroupUploader
     Arguments:
