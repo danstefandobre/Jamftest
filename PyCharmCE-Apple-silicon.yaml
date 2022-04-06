@@ -1,0 +1,84 @@
+Description: Downloads the latest version and makes a pkg. Then, uploads the package to the Jamf Pro Server and creates a Self Service Policy and Smart Group.
+Identifier: com.github.dan-stefan.recipes.jamf.PyCharmCE-Apple-silicon
+MinimumVersion: "2.3"
+
+Input:
+  NAME: Pycharm
+  CATEGORY: Testing
+  DOWNLOAD_URL: https://download.jetbrains.com/python/pycharm-community-2021.3.3-aarch64.dmg?_gl=1*1iiok1q*_ga*Njc0OTkzMjgxLjE2NDg3OTU0NzI.*_ga_V0XZL7QHEB*MTY0OTI0MzI2NC4yLjEuMTY0OTI0MzUxOS4w&_ga=2.190594796.635565616.1649243265-674993281.1648795472
+  GROUP_NAME: "%NAME%-update-smart"
+  GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
+  TESTING_GROUP_NAME: Testing
+  POLICY_CATEGORY: Testing
+  POLICY_TEMPLATE: JamfPolicyTemplate.xml
+  POLICY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DESCRIPTION: The Python IDE for Professional Developers.
+  SELF_SERVICE_ICON: "%NAME%.png"
+  #trial
+  INSTAL_BUTTON_TEXT: "Install %version%" 
+  REINSTALL_BUTTON_TEXT: "Install %version%"
+  #until here
+  UPDATE_PREDICATE: "pkg_uploaded == False"
+
+Process:
+  - Processor: URLDownloader
+    Arguments:
+      url: "%DOWNLOAD_URL%"
+      filename: "%NAME%.dmg"
+   
+  #- Processor: EndOfCheckPhase
+  
+  # below procesor Extracts bundle ID and version of app inside dmg.
+  - Processor: AppDmgVersioner
+    Arguments:
+      dmg_path: "%pathname%"
+      
+  # below processor  Creates a package root and a directory structure. (Can also be used to create directory structures for other purposes.)
+  - Processor: PkgRootCreator
+    Arguments:
+      pkgdirs: 
+        Applications: '0775'
+      pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
+  
+  #below procesor Copies source_path to destination_path.
+  - Processor: Copier
+    Arguments:
+      destination_path: "%pkgroot%/Applications/%app_name%"
+      source_path: "%pathname%/%app_name%"
+      
+  # below processor Calls autopkgserver to create a package.    
+  - Processor: PkgCreator
+    Arguments:
+      pkg_request: 
+        chown:
+          - group: admin
+            path: Applications
+            user: root
+        id: "%bundleid%"
+        options: purge_ds_store
+        pkgname: "%NAME%-%version%"
+        version: "%version%"
+        
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
+    Arguments:
+      pkg_category: "%CATEGORY%"
+      prod_name: "%NAME%"
+      pkg_path: "%pkg_path%"
+
+   # below processor Sets a variable to tell AutoPackager to stop processing a recipe if a predicate comparison evaluates to true.
+  - Processor: StopProcessingIf
+    Arguments:
+      predicate: "%UPDATE_PREDICATE%"
+
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfComputerGroupUploader
+    Arguments:
+      computergroup_template: "%GROUP_TEMPLATE%"
+      computergroup_name: "%GROUP_NAME%"
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPolicyUploader
+    Arguments:
+      policy_template: "%POLICY_TEMPLATE%"
+      policy_name: "%POLICY_NAME%"
+      icon: "%SELF_SERVICE_ICON%"
