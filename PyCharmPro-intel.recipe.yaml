@@ -1,9 +1,9 @@
 Description: Downloads the latest version and makes a pkg. Then, uploads the package to the Jamf Pro Server and creates a Self Service Policy and Smart Group.
-Identifier: com.github.dan-stefan.recipes.jamf.PyCharmPro
+Identifier: com.github.dan-stefan.recipes.jamf
 MinimumVersion: "2.3"
 
 Input:
-  NAME: Pycharm
+  NAME: PycharmPro-intel
   CATEGORY: Testing
   DOWNLOAD_URL: https://download.jetbrains.com/python/pycharm-professional-2021.3.3.dmg?_gl=1*199yn74*_ga*Njc0OTkzMjgxLjE2NDg3OTU0NzI.*_ga_V0XZL7QHEB*MTY0OTQxMzE0NC4zLjEuMTY0OTQxMzM2Mi4w&_ga=2.31741118.1252807679.1649413145-674993281.1648795472
   GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
