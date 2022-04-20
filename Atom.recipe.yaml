@@ -1,60 +1,56 @@
 Description: Downloads the latest version and makes a pkg. Then, uploads the package to the Jamf Pro Server and creates a Self Service Policy and Smart Group.
-Identifier: com.github.dan-stefan.recipes.jamf.Atom 
+Identifier: com.github.dan-stefan.recipes.jamf
 MinimumVersion: "2.3"
 
 Input:
   NAME: Atom
   CATEGORY: Testing
-  #PKG_ID: com.microsoft.VSCode
-  DOWNLOAD_URL: https://github.com/atom/atom/releases/download/v1.60.0/atom-windows.zip
-  USER_AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/601.2.7 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.7
-  GROUP_NAME: "%NAME%-update-smart"
+  DOWNLOAD_URL: https://github.com/atom/atom/releases/download/v1.60.0/atom-mac.zip
   GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
   TESTING_GROUP_NAME: Testing
   POLICY_CATEGORY: Testing
   POLICY_TEMPLATE: JamfPolicyTemplate.xml
   POLICY_NAME: "Install Latest %NAME%"
   SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
-  SELF_SERVICE_DESCRIPTION: Atom
+  SELF_SERVICE_DESCRIPTION: A hackable text editor for the 21st Century
   SELF_SERVICE_ICON: "%NAME%.png"
+  #trial
+  INSTAL_BUTTON_TEXT: "Install %version%"
+  REINSTALL_BUTTON_TEXT: "Install %version%"
+  #until here
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
 Process:
-
   - Processor: URLDownloader
     Arguments:
       url: "%DOWNLOAD_URL%"
       filename: "%NAME%.zip"
 
-  - Processor: EndOfCheckPhase
-
+  #- Processor: EndOfCheckPhase
   - Processor: Unarchiver
     Arguments:
       archive_path: "%RECIPE_CACHE_DIR%/downloads/%NAME%.zip"
       purge_destination: true
 
-  #- Processor: CodeSignatureVerifier
-    #Arguments:
-    #  input_path: "%RECIPE_CACHE_DIR%/%NAME%/Visual Studio Code.app"
-      #requirement: identifier "com.microsoft.VSCode" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UBF8T346G9
+  # below procesor Extracts bundle ID and version of app inside dmg.
+  - Processor: AppDmgVersioner
+    Arguments:
+      dmg_path: "%pathname%"
 
+  # below processor  Creates a package root and a directory structure. (Can also be used to create directory structures for other purposes.)
   - Processor: PkgRootCreator
     Arguments:
       pkgdirs:
         Applications: '0775'
       pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
 
-  - Processor: Unarchiver
+  #below procesor Copies source_path to destination_path.
+  - Processor: Copier
     Arguments:
-      archive_path: "%pathname%"
-      destination_path: "%pkgroot%/Applications"
-      purge_destination: true
+      destination_path: "%pkgroot%/Applications/%app_name%"
+      source_path: "%pathname%/%app_name%"
 
-  - Processor: Versioner
-    Arguments:
-      input_plist_path: "%pkgroot%/Applications/Visual Studio Code.app/Contents/Info.plist"
-      plist_version_key: CFBundleShortVersionString
-
+  # below processor Calls autopkgserver to create a package.
   - Processor: PkgCreator
     Arguments:
       pkg_request:
@@ -62,10 +58,10 @@ Process:
           - group: admin
             path: Applications
             user: root
-        #id: "%PKG_ID%"
+        id: "%bundleid%"
         options: purge_ds_store
         pkgname: "%NAME%-%version%"
-        pkgdir: "%RECIPE_CACHE_DIR%"
+        version: "%version%"
 
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
     Arguments:
@@ -73,9 +69,11 @@ Process:
       prod_name: "%NAME%"
       pkg_path: "%pkg_path%"
 
+   # below processor Sets a variable to tell AutoPackager to stop processing a recipe if a predicate comparison evaluates to true.
   - Processor: StopProcessingIf
     Arguments:
       predicate: "%UPDATE_PREDICATE%"
+
 
   - Processor: com.github.grahampugh.jamf-upload.processors/JamfComputerGroupUploader
     Arguments:
