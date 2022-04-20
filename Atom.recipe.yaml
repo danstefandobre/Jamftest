@@ -26,16 +26,17 @@ Process:
       url: "%DOWNLOAD_URL%"
       filename: "%NAME%.zip"
 
-  #- Processor: EndOfCheckPhase
+  - Processor: EndOfCheckPhase
+  
   - Processor: Unarchiver
     Arguments:
       archive_path: "%RECIPE_CACHE_DIR%/downloads/%NAME%.zip"
       purge_destination: true
 
   # below procesor Extracts bundle ID and version of app inside dmg.
-  - Processor: AppDmgVersioner
-    Arguments:
-      dmg_path: "%pathname%"
+  #- Processor: AppDmgVersioner
+    #Arguments:
+      #dmg_path: "%pathname%"
 
   # below processor  Creates a package root and a directory structure. (Can also be used to create directory structures for other purposes.)
   - Processor: PkgRootCreator
