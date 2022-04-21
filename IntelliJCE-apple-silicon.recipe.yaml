@@ -3,7 +3,7 @@ Identifier: com.github.dan-stefan.recipes.jamf.PyCharmCE
 MinimumVersion: "2.3"
 
 Input:
-  NAME: IntelliJ-CE
+  NAME: IntelliJ-CE - Apple Silicon
   CATEGORY: Productivity
   DOWNLOAD_URL: https://download.jetbrains.com/idea/ideaIC-2022.1-aarch64.dmg?_gl=1*zvx080*_ga*MTA3NjU2NDUyNS4xNjQ5MjM5OTgw*_ga_V0XZL7QHEB*MTY1MDUzNzk0Ni4xOS4xLjE2NTA1MzgzODAuMA..&_ga=2.170830112.1008711611.1650535483-1076564525.1649239980&_gac=1.22522569.1650440995.Cj0KCQjw3v6SBhCsARIsACyrRAmIQpN6u_MCaft5WXYtMvTS5ywctSlN7kolzuDaH5UhKe3FfbLKTdUaAprDEALw_wcB
   GROUP_NAME: "%NAME%-update-smart"
