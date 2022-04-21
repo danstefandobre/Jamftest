@@ -3,7 +3,7 @@ Identifier: com.github.dan-stefan.recipes.jamf.PyCharmCE
 MinimumVersion: "2.3"
 
 Input:
-  NAME: IntelliJ-CE
+  NAME: IntelliJ-CE-intel
   CATEGORY: Testing
   DOWNLOAD_URL: https://download.jetbrains.com/idea/ideaIC-2022.1.dmg?_gl=1*1ixgade*_ga*OTY3NjczNDAyLjE2MzY3MjY4NTI.*_ga_V0XZL7QHEB*MTY1MDUzNTYwMC40LjEuMTY1MDUzNTYwNy4w&_ga=2.225340762.1324218748.1650535601-967673402.1636726852
   GROUP_NAME: "%NAME%-update-smart"
