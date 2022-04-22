@@ -23,7 +23,7 @@ Input:
 Process:
   - Processor: URLDownloader
     Arguments:
-      url: "%DOWNLOAD_URL%"
+      url: https://github.com/atom/atom/releases/download/v1.60.0/atom-mac.zip
       filename: "%NAME%.zip"
 
   - Processor: EndOfCheckPhase
