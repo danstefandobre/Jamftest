@@ -44,6 +44,11 @@ Process:
       archive_path: "%pathname%"
       destination_path: "%pkgroot%/Applications"
       purge_destination: true 
+   
+  - Processor: Versioner
+    Arguments:
+      input_plist_path: "%pkgroot%/Applications/Atom.app/Contents/Info.plist"
+      plist_version_key: CFBundleShortVersionString 
   
   - Processor: PkgCreator
     Arguments:
