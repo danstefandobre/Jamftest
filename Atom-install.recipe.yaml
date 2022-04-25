@@ -19,7 +19,7 @@ Input:
   SELF_SERVICE_ICON: "%NAME%.png"
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
-  Process:
+Process:
 
   - Processor: URLDownloader
     Arguments:
