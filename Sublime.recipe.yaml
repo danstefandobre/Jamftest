@@ -47,7 +47,7 @@ Process:
    
   - Processor: Versioner
     Arguments:
-      input_plist_path: "%pkgroot%/Applications/Sublime.app/Contents/Info.plist"
+      input_plist_path: "%pkgroot%/Applications/Sublime Text.app/Contents/Info.plist"
       plist_version_key: CFBundleShortVersionString 
   
   - Processor: PkgCreator
