@@ -5,7 +5,7 @@ MinimumVersion: "2.3"
 Input:
   NAME: Rancher-intel
   CATEGORY: Productivity
-  DOWNLOAD_URL: https://download.jetbrains.com/idea/ideaIU-2021.3.3.dmg?_gl=1*wmgcwc*_ga*NDYzMjQ4NjIyLjE2NDUwODc1NTU.*_ga_V0XZL7QHEB*MTY0ODgxMDU1MC45LjEuMTY0ODgxMDU1Ny4w&_ga=2.2569080.97104468.1648714775-463248622.1645087555&_gac=1.45769430.1646835804.CjwKCAiAvaGRBhBlEiwAiY-yMHtdlWlB7SiPQ1cvr3GgvzZCCOy8EQb1SbnpSENLIJX_snd6l3ZMQBoC6bwQAvD_BwE
+  DOWNLOAD_URL: https://github.com/rancher-sandbox/rancher-desktop/releases/download/v1.2.1/Rancher.Desktop-1.2.1.x86_64.dmg
   GROUP_NAME: "%NAME%"
   GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
   TESTING_GROUP_NAME: Testing
