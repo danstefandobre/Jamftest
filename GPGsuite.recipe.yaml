@@ -1,0 +1,83 @@
+Description: Downloads the latest version and makes a pkg. Then, uploads the package to the Jamf Pro Server and creates a Self Service Policy and Smart Group.
+Identifier: com.github.dan-stefan.recipes.jamf.gpgtools
+MinimumVersion: "2.3"
+
+Input:
+  NAME: GPGtools
+  CATEGORY: Testing
+  DOWNLOAD_URL: https://gpgtools.org/download
+  USER_AGENT: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/601.2.7 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.7
+  GROUP_NAME: "%NAME%-update-smart"
+  GROUP_TEMPLATE: JamfSmartGroupTemplate.xml
+  TESTING_GROUP_NAME: Testing
+  POLICY_CATEGORY: Testing
+  POLICY_TEMPLATE: JamfPolicyTemplate.xml
+  POLICY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
+  SELF_SERVICE_DESCRIPTION: Discord is a free voice, video, and text chat app that's used by tens of millions of people
+  SELF_SERVICE_ICON: "%NAME%.png"
+  UPDATE_PREDICATE: "pkg_uploaded == False"
+
+Process:
+
+  - Processor: URLDownloader
+    Arguments:
+      url: "%DOWNLOAD_URL%"
+      request_headers:
+        user-agent: "%USER_AGENT%"
+      filename: "%NAME%.dmg" 
+   
+  - Processor: EndOfCheckPhase
+  
+  - Processor: CodeSignatureVerifier
+    Arguments:
+      input_path: "%pathname%/Discord.app"
+      requirement: identifier "com.hnc.Discord" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "53Q6R32WPB"
+  
+  - Processor: AppDmgVersioner
+    Arguments:
+      dmg_path: "%pathname%"
+
+  - Processor: PkgRootCreator
+    Arguments:
+      pkgdirs: 
+        Applications: '0775'
+      pkgroot: "%RECIPE_CACHE_DIR%/%NAME%"
+  
+  - Processor: Copier
+    Arguments:
+      destination_path: "%pkgroot%/Applications/%app_name%"
+      source_path: "%pathname%/%app_name%"
+      
+  - Processor: PkgCreator
+    Arguments:
+      pkg_request: 
+        chown:
+          - group: admin
+            path: Applications
+            user: root
+        id: "%bundleid%"
+        options: purge_ds_store
+        pkgname: "%NAME%-%version%"
+        version: "%version%"
+        
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPackageUploader
+    Arguments:
+      pkg_category: "%CATEGORY%"
+      prod_name: "%NAME%"
+      pkg_path: "%pkg_path%"
+
+  - Processor: StopProcessingIf
+    Arguments:
+      predicate: "%UPDATE_PREDICATE%"
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfComputerGroupUploader
+    Arguments:
+      computergroup_template: "%GROUP_TEMPLATE%"
+      computergroup_name: "%GROUP_NAME%"
+
+  - Processor: com.github.grahampugh.jamf-upload.processors/JamfPolicyUploader
+    Arguments:
+      policy_template: "%POLICY_TEMPLATE%"
+      policy_name: "%POLICY_NAME%"
+      icon: "%SELF_SERVICE_ICON%"
