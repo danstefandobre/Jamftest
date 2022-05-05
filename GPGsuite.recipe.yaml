@@ -14,7 +14,7 @@ Input:
   POLICY_TEMPLATE: JamfPolicyTemplate.xml
   POLICY_NAME: "Install Latest %NAME%"
   SELF_SERVICE_DISPLAY_NAME: "Install Latest %NAME%"
-  SELF_SERVICE_DESCRIPTION: Discord is a free voice, video, and text chat app that's used by tens of millions of people
+  SELF_SERVICE_DESCRIPTION: One simple package with everything you need, to protect your emails and files.
   SELF_SERVICE_ICON: "%NAME%.png"
   UPDATE_PREDICATE: "pkg_uploaded == False"
 
@@ -29,10 +29,10 @@ Process:
    
   - Processor: EndOfCheckPhase
   
-  - Processor: CodeSignatureVerifier
-    Arguments:
-      input_path: "%pathname%/Discord.app"
-      requirement: identifier "com.hnc.Discord" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "53Q6R32WPB"
+  #- Processor: CodeSignatureVerifier
+   # Arguments:
+      #input_path: "%pathname%/Discord.app"
+      #requirement: identifier "com.hnc.Discord" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "53Q6R32WPB"
   
   - Processor: AppDmgVersioner
     Arguments:
